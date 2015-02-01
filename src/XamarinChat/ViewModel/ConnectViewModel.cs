@@ -1,9 +1,8 @@
 ﻿using XamarinChat.Services;
 using GalaSoft.MvvmLight;
-using XamarinChat.Services.Implements;
 using GalaSoft.MvvmLight.Command;
-using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace XamarinChat
 {
@@ -12,6 +11,8 @@ namespace XamarinChat
 	/// </summary>
 	public class ConnectViewModel : ViewModelBase
 	{
+		public INavigation Navigation { get; set; }
+
 		string _clientName;
 
 		public string ClientName
@@ -77,7 +78,6 @@ namespace XamarinChat
 		/// </summary>
 		async void ConnectAsync()
 		{
-			CanConnect = false;
 			await ChatService.Connect();
 			await ChatService.NewClient(new XamarinChat.Models.Client { Name = ClientName });
 			CanConnect = true;
@@ -87,14 +87,15 @@ namespace XamarinChat
 		/// Gets or sets the chat service.
 		/// </summary>
 		/// <value>The chat service.</value>
-		public IChatService ChatService { get; set; }
+		IChatService ChatService { get; set; }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="XamarinChat.ConnectViewModel"/> class.
 		/// </summary>
-		public ConnectViewModel()
+		/// <param name="chatService">Chat service.</param>
+		public ConnectViewModel(IChatService chatService)
 		{
-			ChatService = new ChatService();
+			ChatService = chatService;
 		}
 	}
 }
