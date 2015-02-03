@@ -1,8 +1,7 @@
 ﻿using XamarinChat.Services;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
 using System.Windows.Input;
 using Xamarin.Forms;
+using System;
 
 namespace XamarinChat
 {
@@ -11,6 +10,11 @@ namespace XamarinChat
 	/// </summary>
 	public class ConnectViewModel : ViewModel
 	{
+		/// <summary>
+		/// Occurs when connected.
+		/// </summary>
+		public event EventHandler Connected;
+
 		string _name;
 
 		/// <summary>
@@ -58,6 +62,12 @@ namespace XamarinChat
 		}
 
 		/// <summary>
+		/// Gets the connect command.
+		/// </summary>
+		/// <value>The connect command.</value>
+		public ICommand ConnectCommand { get; private set; }
+
+		/// <summary>
 		/// Gets or sets the chat service.
 		/// </summary>
 		/// <value>The chat service.</value>
@@ -70,6 +80,17 @@ namespace XamarinChat
 		public ConnectViewModel(IChatService chatService)
 		{
 			ChatService = chatService;
+			ConnectCommand = new Command(nothing => OnConnected(), nothing => CanConnect);
+		}
+
+		/// <summary>
+		/// Raises the connected event.
+		/// </summary>
+		protected void OnConnected()
+		{
+			var tmp = Connected;
+			if(tmp != null)
+				tmp(this, EventArgs.Empty);
 		}
 	}
 }

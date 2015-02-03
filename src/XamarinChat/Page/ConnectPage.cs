@@ -3,15 +3,23 @@ using Xamarin.Forms;
 
 namespace XamarinChat
 {
-	public class ConnectPage : ContentPage
+	/// <summary>
+	/// Connect page.
+	/// </summary>
+	public sealed class ConnectPage : ContentPage
 	{
+		/// <summary>
+		/// Initializes a new instance of the <see cref="XamarinChat.ConnectPage"/> class.
+		/// </summary>
 		public ConnectPage()
 		{
 			InitializeComponent();
-			BindingContext = ViewModelFactory.Get<ConnectViewModel>();
 		}
 
-		public void InitializeComponent()
+		/// <summary>
+		/// Initializes the component.
+		/// </summary>
+		private void InitializeComponent()
 		{
 			var layout = new StackLayout
 			{
@@ -40,12 +48,17 @@ namespace XamarinChat
 				IsEnabled = false
 			};
 			button.SetBinding<ConnectViewModel>(VisualElement.IsEnabledProperty, vm => vm.CanConnect);
+			button.SetBinding<ConnectViewModel>(Button.CommandProperty, vm => vm.ConnectCommand);
 
 			layout.Children.Add(label);
 			layout.Children.Add(textBox);
 			layout.Children.Add(button);
-
 			Content = layout;
+
+			var viewModel = ViewModelFactory.Get<ConnectViewModel>();
+			viewModel.Connected += (sender, e) => DisplayAlert("Connexion", "Connexion :)", "OK");
+
+			BindingContext = viewModel;
 		}
 	}
 }
