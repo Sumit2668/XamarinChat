@@ -20,9 +20,11 @@ namespace XamarinChat
 
 			var textBox = new Entry 
 			{ 
-				Placeholder = "Name" 
+				Placeholder = "Name",
+				WidthRequest = 300,
+				HorizontalOptions = LayoutOptions.Center
 			};
-			textBox.SetBinding(Entry.TextProperty, "ClientName");
+			textBox.SetBinding(Entry.TextProperty, "Name");
 
 			var label = new Label
 			{
@@ -34,8 +36,10 @@ namespace XamarinChat
 			var button = new Button
 			{
 				VerticalOptions = LayoutOptions.Center,
-				Text = "Connect"
+				Text = "Connect",
+				IsEnabled = false
 			};
+			button.SetBinding<ConnectViewModel>(VisualElement.IsEnabledProperty, vm => vm.CanConnect);
 
 			layout.Children.Add(label);
 			layout.Children.Add(textBox);

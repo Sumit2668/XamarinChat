@@ -9,78 +9,52 @@ namespace XamarinChat
 	/// <summary>
 	/// Connect view model.
 	/// </summary>
-	public class ConnectViewModel : ViewModelBase
+	public class ConnectViewModel : ViewModel
 	{
-		public INavigation Navigation { get; set; }
+		string _name;
 
-		string _clientName;
-
-		public string ClientName
+		/// <summary>
+		/// Gets or sets the name.
+		/// </summary>
+		/// <value>The name.</value>
+		public string Name
 		{
 			get
 			{ 
-				return _clientName;
+				return _name;
 			}
 			set
 			{ 
-				_clientName = value;
-				CanConnect = !string.IsNullOrEmpty(_clientName);
+				if(_name != value)
+				{
+					_name = value;
+					OnPropertyChanged("Name");
+					CanConnect = !string.IsNullOrEmpty(_name);
+				}
+
 			}
 		}
 
-		bool _canConnect = false;
+		bool _canConnect;
 
+		/// <summary>
+		/// Gets or sets a value indicating whether this instance can connect.
+		/// </summary>
+		/// <value><c>true</c> if this instance can connect; otherwise, <c>false</c>.</value>
 		public bool CanConnect
 		{
-			get 
+			get
 			{ 
 				return _canConnect;
 			}
-			set 
-			{ 
-				if(Set(() => CanConnect, ref _canConnect, value))
-				{
-					RaisePropertyChanged(() => CanConnect);
-				}
-			}
-		}
-
-		private bool _showSpinner;
-
-		public bool ShowSpinner 
-		{ 
-			get 
-			{ 
-				return _showSpinner; 
-			} 
-			set 
-			{ 
-				if(Set(() => ShowSpinner, ref _showSpinner, value))
-				{
-					RaisePropertyChanged(() => ShowSpinner);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Gets the IncrementCommand.
-		/// </summary>
-		public ICommand ConnectCommand
-		{
-			get
+			set
 			{
-				return new RelayCommand(ConnectAsync);
+				if(_canConnect != value)
+				{
+					_canConnect = value;
+					OnPropertyChanged("CanConnect");
+				}
 			}
-		}
-
-		/// <summary>
-		/// Connect.
-		/// </summary>
-		async void ConnectAsync()
-		{
-			await ChatService.Connect();
-			await ChatService.NewClient(new XamarinChat.Models.Client { Name = ClientName });
-			CanConnect = true;
 		}
 
 		/// <summary>
