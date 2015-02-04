@@ -58,9 +58,9 @@ namespace XamarinChat
 		}
 
 		/// <summary>
-		/// Bind this instance.
+		/// Bind ViewModel.
 		/// </summary>
-		private void Bind()
+		void Bind()
 		{
 			var viewModel = ViewModelFactory.Get<ConnectViewModel>();
 			viewModel.Connected += async (sender, e) => {

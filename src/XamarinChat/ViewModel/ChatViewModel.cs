@@ -94,7 +94,10 @@ namespace XamarinChat
 				Message = string.Empty;
 			}, nothing => CanSend);
 		}
-		
+
+		/// <summary>
+		/// Initializes the events.
+		/// </summary>
 		public void InitializeEvents()
 		{
 			ChatService.ServerMessageReceived += (sender, e) =>

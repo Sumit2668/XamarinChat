@@ -57,7 +57,11 @@ namespace XamarinChat
 			Content = layout;
 		}
 
-		private void Bind(string name)
+		/// <summary>
+		/// Bind ViewModel.
+		/// </summary>
+		/// <param name="name">Name.</param>
+		void Bind(string name)
 		{
 			var viewModel = ViewModelFactory.Get<ChatViewModel>();
 			viewModel.Name = name;
