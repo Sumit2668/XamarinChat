@@ -2,6 +2,8 @@
 using XamarinChat.Services;
 using System.Windows.Input;
 using Xamarin.Forms;
+using System.Collections.ObjectModel;
+using XamarinChat.Models;
 
 namespace XamarinChat
 {
@@ -56,10 +58,22 @@ namespace XamarinChat
 		}
 
 		/// <summary>
+		/// Gets or sets the name.
+		/// </summary>
+		/// <value>The name.</value>
+		public string Name { get; set; }
+
+		/// <summary>
 		/// Gets the send command.
 		/// </summary>
 		/// <value>The send command.</value>
 		public ICommand SendCommand { get; private set; }
+
+		/// <summary>
+		/// Gets or sets the messages.
+		/// </summary>
+		/// <value>The messages.</value>
+		public ObservableCollection<string> Messages { get; set; }
 
 		/// <summary>
 		/// Gets or sets the chat service.
@@ -74,7 +88,22 @@ namespace XamarinChat
 		public ChatViewModel(IChatService chatService)
 		{
 			ChatService = chatService;
-			SendCommand = new Command( async nothing => await ChatService.Send(new XamarinChat.Models.ClientMessage{ Client = new XamarinChat.Models.Client { Name = "Test" }, Message = Message }), nothing => CanSend);
+			Messages = new ObservableCollection<string>();
+			SendCommand = new Command( async nothing => {
+				await ChatService.Send(new XamarinChat.Models.ClientMessage{ Client = new XamarinChat.Models.Client { Name = Name }, Message = Message });
+				Message = string.Empty;
+			}, nothing => CanSend);
+		}
+		
+		public void InitializeEvents()
+		{
+			ChatService.ServerMessageReceived += (sender, e) =>
+			{
+				if(Messages.Count > 10)
+					Messages.RemoveAt(0);
+
+				Messages.Add(string.Format("{0} : {1}", e.Client.Name, e.Message));
+			};
 		}
 	}
 }

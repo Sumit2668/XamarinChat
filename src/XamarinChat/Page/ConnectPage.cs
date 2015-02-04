@@ -14,6 +14,7 @@ namespace XamarinChat
 		public ConnectPage()
 		{
 			InitializeComponent();
+			Bind();
 		}
 
 		/// <summary>
@@ -54,11 +55,17 @@ namespace XamarinChat
 			layout.Children.Add(textBox);
 			layout.Children.Add(button);
 			Content = layout;
+		}
 
+		/// <summary>
+		/// Bind this instance.
+		/// </summary>
+		private void Bind()
+		{
 			var viewModel = ViewModelFactory.Get<ConnectViewModel>();
 			viewModel.Connected += async (sender, e) => {
 				await DisplayAlert("Connexion", string.Format("Bienvenu sur le chat {0}", viewModel.Name), "OK");
-				await Navigation.PushAsync(new ChatPage());
+				await Navigation.PushAsync(new ChatPage(viewModel.Name));
 				viewModel.Name = string.Empty;
 			};
 
