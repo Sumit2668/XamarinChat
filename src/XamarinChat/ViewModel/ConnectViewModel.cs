@@ -80,7 +80,11 @@ namespace XamarinChat
 		public ConnectViewModel(IChatService chatService)
 		{
 			ChatService = chatService;
-			ConnectCommand = new Command(nothing => OnConnected(), nothing => CanConnect);
+			ConnectCommand = new Command(async nothing => {
+				await ChatService.Connect();
+				await ChatService.NewClient(new XamarinChat.Models.Client { Name = Name });
+				OnConnected();
+			}, nothing => CanConnect);
 		}
 
 		/// <summary>

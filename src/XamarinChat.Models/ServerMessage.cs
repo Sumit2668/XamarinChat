@@ -11,7 +11,7 @@ namespace XamarinChat.Models
 		/// Gets or sets the name.
 		/// </summary>
 		/// <value>The name.</value>
-		public Client Name { get; set; }
+		public Client Client { get; set; }
 
 		/// <summary>
 		/// Gets or sets the message.

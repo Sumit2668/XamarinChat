@@ -26,7 +26,7 @@ namespace XamarinChat.Server
 			var serverMessage = Mapper.Map<ServerMessage>(clientMessage);
 			serverMessage.ServerDate = DateTime.Now;
 
-			Console.WriteLine(string.Format("{0} - {1}\n{2}", serverMessage.ServerDate.ToShortDateString(), serverMessage.Name, serverMessage.Message));
+			Console.WriteLine(string.Format("{0} - {1}\n{2}", serverMessage.ServerDate.ToShortDateString(), serverMessage.Client.Name, serverMessage.Message));
 
 			Clients.All.broadcastMessage(JsonConvert.SerializeObject(serverMessage, new JsonSerializerSettings
 			{
