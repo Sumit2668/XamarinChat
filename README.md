@@ -1,7 +1,7 @@
 XamarinChat
 =======
 
-Simple chat build with :
+Simple chat built with :
 - Xamarin.Forms
 - Ninject (PCL)
 - SignalR
