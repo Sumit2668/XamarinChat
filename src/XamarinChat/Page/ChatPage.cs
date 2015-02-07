@@ -1,21 +1,29 @@
-﻿using System;
-using Xamarin.Forms;
-using XamarinChat.Models;
+﻿using Xamarin.Forms;
 
 namespace XamarinChat
 {
 	/// <summary>
 	/// Chat page.
 	/// </summary>
-	public class ChatPage : ContentPage
+	public sealed class ChatPage : ContentPage
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="XamarinChat.ChatPage"/> class.
 		/// </summary>
-		public ChatPage(string name)
+		public ChatPage()
 		{
 			InitializeComponent();
-			Bind(name);
+			ShowConnect();
+		}
+
+		/// <summary>
+		/// Shows the connect page.
+		/// </summary>
+		async void ShowConnect()
+		{
+			var page = new ConnectPage();
+			page.Closed += (object sender, string e) => Bind(e);
+			await Navigation.PushModalAsync(page);
 		}
 
 		/// <summary>

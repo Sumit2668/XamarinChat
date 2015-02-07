@@ -9,7 +9,7 @@ namespace XamarinChat
 		public App()
 		{
 			// The root page of your application
-			MainPage = new NavigationPage(new ConnectPage());
+			MainPage = new NavigationPage(new ChatPage());
 		}
 
 		protected override void OnStart()

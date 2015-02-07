@@ -9,6 +9,11 @@ namespace XamarinChat
 	public sealed class ConnectPage : ContentPage
 	{
 		/// <summary>
+		/// Occurs when connected.
+		/// </summary>
+		public event EventHandler<string> Closed;
+
+		/// <summary>
 		/// Initializes a new instance of the <see cref="XamarinChat.ConnectPage"/> class.
 		/// </summary>
 		public ConnectPage()
@@ -65,11 +70,22 @@ namespace XamarinChat
 			var viewModel = ViewModelFactory.Get<ConnectViewModel>();
 			viewModel.Connected += async (sender, e) => {
 				await DisplayAlert("Connexion", string.Format("Bienvenu sur le chat {0}", viewModel.Name), "OK");
-				await Navigation.PushAsync(new ChatPage(viewModel.Name));
-				viewModel.Name = string.Empty;
+				await Navigation.PopModalAsync();
+				OnClosed(viewModel.Name);
 			};
 
 			BindingContext = viewModel;
+		}
+
+		/// <summary>
+		/// Raises the closed event.
+		/// </summary>
+		/// <param name="name">Name.</param>
+		private void OnClosed(string name)
+		{
+			var tmp = Closed;
+			if(tmp != null)
+				tmp(this, name);
 		}
 	}
 }
